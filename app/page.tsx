@@ -37,6 +37,42 @@ export default function Home() {
     return () => window.clearInterval(timer);
   }, []);
 
+  const handleClick = async () => {
+    try {
+      const res = await fetch("/api/click", {
+        method: "POST",
+        keepalive: true,
+        cache: "no-store",
+      });
+
+      if (!res.ok) return;
+
+      const json = await res.json();
+
+      if (typeof json.total_clicks === "number") {
+        setData((prev) =>
+          prev
+            ? {
+                ...prev,
+                total_clicks: json.total_clicks,
+              }
+            : prev
+        );
+      } else {
+        setData((prev) =>
+          prev
+            ? {
+                ...prev,
+                total_clicks: prev.total_clicks + 1,
+              }
+            : prev
+        );
+      }
+    } catch (e) {
+      console.error("Click error", e);
+    }
+  };
+
   const interpolatedStreams = useMemo(() => {
     if (!data) return 0;
 
@@ -53,7 +89,8 @@ export default function Home() {
       Number(data.total_streams || 0) - Number(data.yesterday_streams || 0)
     );
 
-    const streams = Number(data.yesterday_streams || 0) + deltaStreams * progressInDay;
+    const streams =
+      Number(data.yesterday_streams || 0) + deltaStreams * progressInDay;
 
     return Math.floor(streams);
   }, [data, now]);
@@ -206,6 +243,7 @@ export default function Home() {
               href={data.track_url}
               target="_blank"
               rel="noreferrer"
+              onClick={handleClick}
               className="w-full sm:w-auto bg-[#00517c] hover:bg-[#004568] text-white font-bold px-5 py-3 rounded-[14px] whitespace-nowrap shrink-0 text-center"
             >
               Слушать на Яндекс.Музыке
@@ -227,6 +265,7 @@ export default function Home() {
               href="https://music.yandex.ru/artist/18926860"
               target="_blank"
               rel="noreferrer"
+              onClick={handleClick}
               className="mt-5 bg-[#00517c] text-white font-bold px-5 py-3 rounded-[14px]"
             >
               Присоединяйся!

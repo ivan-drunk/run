@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "друнк — Навсегда к тебе",
-  description: "Промо-лендинг релиза группы друнк",
+  description: "Марафон вокруг света с группой друнк",
 };
 
 export const viewport: Viewport = {

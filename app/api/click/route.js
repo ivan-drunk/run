@@ -1,15 +1,13 @@
-import { supabase } from '@/lib/supabase'
+import { NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 
 export async function POST() {
-  const { data } = await supabase
-    .from('stats')
-    .select('total_clicks')
-    .single()
+  const { error } = await supabase.rpc("increment_clicks");
 
-  await supabase
-    .from('stats')
-    .update({ total_clicks: data.total_clicks + 1 })
-    .eq('id', 1)
+  if (error) {
+    console.error("Increment error:", error);
+    return NextResponse.json({ error: "Failed to increment" }, { status: 500 });
+  }
 
-  return Response.json({ success: true })
+  return NextResponse.json({ success: true });
 }
