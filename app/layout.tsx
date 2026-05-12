@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "друнк — Навсегда к тебе",
-  description: "Марафон вокруг света с группой друнк",
+  title: "Марафон вокруг света с группой друнк",
+  description: "друнк — Навсегда к тебе",
 };
 
 export const viewport: Viewport = {
